@@ -45,6 +45,15 @@ api:
 	       --openapi_out=fq_schema_naming=true,default_response=false:. \
 	       $(API_PROTO_FILES)
 
+.PHONY: errors
+# generate errors code
+errors:
+	protoc --proto_path=./api \
+           --proto_path=./third_party \
+           --go_out=paths=source_relative:./api \
+           --go-errors_out=paths=source_relative:./api \
+           $(API_PROTO_FILES)
+
 .PHONY: build
 # build
 build:
