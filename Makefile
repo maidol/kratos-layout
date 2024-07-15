@@ -54,6 +54,15 @@ errors:
            --go-errors_out=paths=source_relative:./api \
            $(API_PROTO_FILES)
 
+.PHONY: validate
+# generate validate proto
+validate:
+	protoc --proto_path=./api \
+           --proto_path=./third_party \
+           --go_out=paths=source_relative:./api \
+           --validate_out=paths=source_relative,lang=go:./api \
+           $(API_PROTO_FILES)
+
 .PHONY: build
 # build
 build:
