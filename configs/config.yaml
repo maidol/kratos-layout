@@ -8,9 +8,10 @@ server:
 data:
   database:
     driver: mysql
-    source: root:root@tcp(127.0.0.1:3306)/test?parseTime=True&loc=Local
+    source: root:123456@tcp(127.0.0.1:3306)/testdb?parseTime=True&loc=Local
   redis:
     addr: 127.0.0.1:6379
+    db: 1
     read_timeout: 0.2s
     write_timeout: 0.2s
 registry:

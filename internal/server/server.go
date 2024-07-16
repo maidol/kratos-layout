@@ -1,11 +1,11 @@
 package server
 
 import (
-	"github.com/go-kratos/kratos-layout/internal/conf"
 	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/google/wire"
+	"github.com/maidol/kratos-layout/internal/conf"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"

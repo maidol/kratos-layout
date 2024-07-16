@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 
-	v1 "github.com/go-kratos/kratos-layout/api/helloworld/v1"
-	"github.com/go-kratos/kratos-layout/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/metadata"
+	v1 "github.com/maidol/kratos-layout/api/helloworld/v1"
+	"github.com/maidol/kratos-layout/internal/biz"
 )
 
 // GreeterService is a greeter service.
@@ -26,7 +26,7 @@ func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1
 	s.log.WithContext(ctx).Info("greeterservice sayhello")
 	if md, ok := metadata.FromServerContext(ctx); ok {
 		extra := md.Get("x-md-global-extra")
-		s.log.WithContext(ctx).Info("------------x-md-global-extra: ", extra)
+		s.log.WithContext(ctx).Info("x-md-global-extra: ", extra)
 	}
 	g, err := s.uc.CreateGreeter(ctx, &biz.Greeter{Hello: in.Name})
 	if err != nil {
