@@ -120,7 +120,7 @@ func NewDiscovery(conf *conf.Registry) registry.Discovery {
 func NewHelloServiceClient(r registry.Discovery, tp *tracesdk.TracerProvider) hellov1.GreeterClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("discovery:///hello1"),
+		grpc.WithEndpoint("discovery:///hello.ex"),
 		grpc.WithDiscovery(r),
 		grpc.WithMiddleware(
 			tracing.Client(tracing.WithTracerProvider(tp)),
