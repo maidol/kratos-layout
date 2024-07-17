@@ -4,7 +4,7 @@ package user
 
 import (
 	"entgo.io/ent/dialect/sql"
-	"github.com/maidol/kratos-layout/ent/predicate"
+	"github.com/maidol/kratos-layout/internal/data/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.

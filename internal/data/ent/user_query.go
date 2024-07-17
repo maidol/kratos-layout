@@ -10,8 +10,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/maidol/kratos-layout/ent/predicate"
-	"github.com/maidol/kratos-layout/ent/user"
+	"github.com/maidol/kratos-layout/internal/data/ent/predicate"
+	"github.com/maidol/kratos-layout/internal/data/ent/user"
 )
 
 // UserQuery is the builder for querying User entities.

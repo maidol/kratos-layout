@@ -7,7 +7,7 @@ import (
 	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-redis/redis/extra/redisotel"
 	"github.com/go-redis/redis/v8"
-	"github.com/maidol/kratos-layout/ent"
+	"github.com/maidol/kratos-layout/internal/data/ent"
 	"github.com/maidol/kratos-layout/internal/conf"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"

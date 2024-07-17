@@ -3,8 +3,8 @@
 package ent
 
 import (
-	"github.com/maidol/kratos-layout/ent/schema"
-	"github.com/maidol/kratos-layout/ent/user"
+	"github.com/maidol/kratos-layout/internal/data/ent/schema"
+	"github.com/maidol/kratos-layout/internal/data/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code

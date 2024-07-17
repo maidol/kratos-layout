@@ -9,12 +9,12 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/maidol/kratos-layout/ent/migrate"
+	"github.com/maidol/kratos-layout/internal/data/ent/migrate"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
-	"github.com/maidol/kratos-layout/ent/user"
+	"github.com/maidol/kratos-layout/internal/data/ent/user"
 )
 
 // Client is the client that holds all ent builders.

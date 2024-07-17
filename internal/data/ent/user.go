@@ -8,7 +8,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/maidol/kratos-layout/ent/user"
+	"github.com/maidol/kratos-layout/internal/data/ent/user"
 )
 
 // User is the model entity for the User schema.

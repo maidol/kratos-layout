@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/maidol/kratos-layout/ent"
+	"github.com/maidol/kratos-layout/internal/data/ent"
 )
 
 // The UserFunc type is an adapter to allow the use of ordinary

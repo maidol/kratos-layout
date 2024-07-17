@@ -5,12 +5,12 @@ package enttest
 import (
 	"context"
 
-	"github.com/maidol/kratos-layout/ent"
+	"github.com/maidol/kratos-layout/internal/data/ent"
 	// required by schema hooks.
-	_ "github.com/maidol/kratos-layout/ent/runtime"
+	_ "github.com/maidol/kratos-layout/internal/data/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
-	"github.com/maidol/kratos-layout/ent/migrate"
+	"github.com/maidol/kratos-layout/internal/data/ent/migrate"
 )
 
 type (

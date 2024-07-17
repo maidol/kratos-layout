@@ -25,6 +25,8 @@ init:
 	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2@latest
 	go install github.com/google/gnostic/cmd/protoc-gen-openapi@latest
 	go install github.com/google/wire/cmd/wire@latest
+	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-errors/v2@latest
+	go install github.com/envoyproxy/protoc-gen-validate@latest
 
 .PHONY: config
 # generate internal proto
@@ -71,8 +73,8 @@ build:
 .PHONY: generate
 # generate
 generate:
-	go mod tidy
-	go get github.com/google/wire/cmd/wire@latest
+	# go mod tidy
+	# go get github.com/google/wire/cmd/wire@latest
 	go generate ./...
 
 .PHONY: all
@@ -80,7 +82,13 @@ generate:
 all:
 	make api;
 	make config;
+	make errors;
+	make validate;
 	make generate;
+
+.PHONY: ent
+ent:
+	cd internal/data/ && ent generate ./ent/schema
 
 # show help
 help:
