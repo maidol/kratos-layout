@@ -14,6 +14,7 @@ import (
 	"github.com/maidol/kratos-layout/internal/data"
 	"github.com/maidol/kratos-layout/internal/server"
 	"github.com/maidol/kratos-layout/internal/service"
+	"go.opentelemetry.io/otel/sdk/trace"
 )
 
 import (
@@ -23,16 +24,18 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(confServer *conf.Server, registry *conf.Registry, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
-	dataData, cleanup, err := data.NewData(confData, logger)
+func wireApp(confServer *conf.Server, registry *conf.Registry, confData *conf.Data, logger log.Logger, tracerProvider *trace.TracerProvider) (*kratos.App, func(), error) {
+	discovery := data.NewDiscovery(registry)
+	greeterClient := data.NewHelloServiceClient(discovery, tracerProvider)
+	dataData, cleanup, err := data.NewData(confData, logger, greeterClient)
 	if err != nil {
 		return nil, nil, err
 	}
 	greeterRepo := data.NewGreeterRepo(dataData, logger)
 	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
 	greeterService := service.NewGreeterService(greeterUsecase, logger)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
-	httpServer := server.NewHTTPServer(confServer, greeterService, logger)
+	grpcServer := server.NewGRPCServer(confServer, greeterService, logger, tracerProvider)
+	httpServer := server.NewHTTPServer(confServer, greeterService, logger, tracerProvider)
 	registrar := server.NewRegistrar(registry, logger)
 	app := newApp(logger, grpcServer, httpServer, registrar)
 	return app, func() {
