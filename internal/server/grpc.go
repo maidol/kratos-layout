@@ -18,10 +18,6 @@ import (
 
 // NewGRPCServer new a gRPC server.
 func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger, tp *tracesdk.TracerProvider) *grpc.Server {
-	// err := initTracer("http://localhost:14268/api/traces")
-	// if err != nil {
-	// 	panic(err)
-	// }
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),

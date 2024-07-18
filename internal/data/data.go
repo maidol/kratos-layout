@@ -7,8 +7,8 @@ import (
 	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-redis/redis/extra/redisotel"
 	"github.com/go-redis/redis/v8"
-	"github.com/maidol/kratos-layout/internal/data/ent"
 	"github.com/maidol/kratos-layout/internal/conf"
+	"github.com/maidol/kratos-layout/internal/data/ent"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
@@ -65,7 +65,7 @@ func NewData(c *conf.Data, logger log.Logger, hc hellov1.GreeterClient) (*Data, 
 	})
 	client := ent.NewClient(ent.Driver(sqlDrv))
 	if err != nil {
-		l.Errorf("failed opening connection to sqlite: %v", err)
+		l.Errorf("failed opening connection to db: %v", err)
 		return nil, nil, err
 	}
 	// Run the auto migration tool.
