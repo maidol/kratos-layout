@@ -18,6 +18,7 @@ import (
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/prometheus/client_golang/prometheus"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 
 	_ "go.uber.org/automaxprocs"
@@ -93,7 +94,24 @@ func main() {
 	)
 	otel.SetTracerProvider(tp)
 
-	app, cleanup, err := wireApp(bc.Server, bc.Registry, bc.Data, logger, tp)
+	metricSeconds := prometheus.NewHistogramVec(prometheus.HistogramOpts{
+		Namespace: "server",
+		Subsystem: "requests",
+		Name:      "duration_sec",
+		Help:      "server requests duration(sec).",
+		Buckets:   []float64{0.005, 0.01, 0.025, 0.05, 0.1, 0.250, 0.5, 1},
+	}, []string{"kind", "operation"})
+
+	metricRequests := prometheus.NewCounterVec(prometheus.CounterOpts{
+		Namespace: "client",
+		Subsystem: "requests",
+		Name:      "code_total",
+		Help:      "The total number of processed requests",
+	}, []string{"kind", "operation", "code", "reason"})
+
+	prometheus.MustRegister(metricSeconds, metricRequests)
+
+	app, cleanup, err := wireApp(bc.Server, bc.Registry, bc.Data, logger, tp, metricSeconds, metricRequests)
 	if err != nil {
 		panic(err)
 	}
