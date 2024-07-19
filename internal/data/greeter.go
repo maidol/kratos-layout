@@ -10,6 +10,8 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
+var _ biz.GreeterRepo = (*greeterRepo)(nil)
+
 type greeterRepo struct {
 	data *Data
 	log  *log.Helper
