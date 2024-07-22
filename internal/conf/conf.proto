@@ -57,3 +57,14 @@ message Registry {
     }
     Etcd etcd = 1;
 }
+
+message ConfigSource {
+  string type = 1;
+  string path = 2;
+  message Etcd {
+        repeated string address = 1;
+        string username = 2;
+        string password = 3;
+  }
+  Etcd etcd = 3;
+}

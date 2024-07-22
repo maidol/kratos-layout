@@ -1,0 +1,10 @@
+source:
+  type: "file"
+  path: "/app-config"
+  etcd:
+    address: 
+      - 127.0.0.1:2379
+      - 127.0.0.2:2379
+      - 127.0.0.3:2379
+    username:
+    password:

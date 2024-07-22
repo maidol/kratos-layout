@@ -2,7 +2,11 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
+	"time"
+
+	// "time"
 
 	"github.com/maidol/kratos-layout/internal/conf"
 	"go.opentelemetry.io/otel"
@@ -10,6 +14,7 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 
+	cfg "github.com/go-kratos/kratos/contrib/config/etcd/v2"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
@@ -19,7 +24,10 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/prometheus/client_golang/prometheus"
+	clientv3 "go.etcd.io/etcd/client/v3"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
+
+	ggrpc "google.golang.org/grpc"
 
 	_ "go.uber.org/automaxprocs"
 )
@@ -77,9 +85,53 @@ func main() {
 		panic(err)
 	}
 
-	var bc conf.Bootstrap
-	if err := c.Scan(&bc); err != nil {
+	var s conf.ConfigSource
+	if err := c.Value("source").Scan(&s); err != nil {
 		panic(err)
+	}
+
+	var bc conf.Bootstrap
+
+	switch s.Type {
+	case "file":
+		if err := c.Scan(&bc); err != nil {
+			panic(err)
+		}
+	case "etcd":
+		// create an etcd client
+		client, err := clientv3.New(clientv3.Config{
+			Endpoints:   s.Etcd.Address,
+			Username:    s.Etcd.Username,
+			Password:    s.Etcd.Password,
+			DialTimeout: 5 * time.Second,
+			DialOptions: []ggrpc.DialOption{ggrpc.WithBlock()},
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// configure the source, "path" is required
+		source, err := cfg.New(client, cfg.WithPath(s.Path), cfg.WithPrefix(true))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// create a config instance with source
+		appconf := config.New(
+			config.WithSource(source),
+		)
+		defer c.Close()
+
+		// load sources before get
+		if err := appconf.Load(); err != nil {
+			log.Fatal(err)
+		}
+
+		if err := appconf.Scan(&bc); err != nil {
+			log.Fatal(err)
+		}
+	default:
+		panic(fmt.Errorf("unsupported config source type: %s", s.Type))
 	}
 
 	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(bc.Trace.Endpoint)))
@@ -87,6 +139,7 @@ func main() {
 		panic(err)
 	}
 	tp := tracesdk.NewTracerProvider(
+		tracesdk.WithSampler(tracesdk.ParentBased(tracesdk.TraceIDRatioBased(1.0))),
 		tracesdk.WithBatcher(exp),
 		tracesdk.WithResource(resource.NewSchemaless(
 			semconv.ServiceNameKey.String(Name),

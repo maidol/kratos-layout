@@ -5,6 +5,7 @@ go 1.19
 require (
 	entgo.io/ent v0.12.5
 	github.com/envoyproxy/protoc-gen-validate v1.0.4
+	github.com/go-kratos/kratos/contrib/config/etcd/v2 v2.0.0-20240719020056-7eb39d0c396a
 	github.com/go-kratos/kratos/contrib/metrics/prometheus/v2 v2.0.0-20240322155018-41971ffa647a
 	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20240627104009-3198e0b83bf2
 	github.com/go-kratos/kratos/v2 v2.7.3
@@ -66,9 +67,9 @@ require (
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.17.0 // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.20.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
-	golang.org/x/sys v0.17.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/genproto v0.0.0-20240123012728-ef4313101c80 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240123012728-ef4313101c80 // indirect
